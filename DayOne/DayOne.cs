@@ -1,12 +1,22 @@
 namespace AOC.DayOne;
 
+public class DayOneResult
+{
+    public int TotalDifference { get; set; }
+    public int TotalSum { get; set; }
+
+    public override string ToString()
+    {
+        return $"TotalDifference: {TotalDifference}, TotalSum: {TotalSum}";
+    }
+}
+
 public class DayOne
 {
     private static string[] ParseInput()
     {
         using StreamReader reader = new("DayOne/input.txt");
-        string text = reader.ReadToEnd();
-
+        var text = reader.ReadToEnd();
 
         var lines = text.Split(Environment.NewLine);
         return lines;
@@ -15,27 +25,43 @@ public class DayOne
     private static (int, int) ExtractNumbers(string input)
     {
         var extractedNumbers = input.Split("   ");
-        return (Int32.Parse(extractedNumbers[0]), Int32.Parse(extractedNumbers[1]));
+        return (int.Parse(extractedNumbers[0]), int.Parse(extractedNumbers[1]));
     }
 
-    public static string Run()
+    public static DayOneResult Run()
     {
         var input = ParseInput();
-        int[] columnA = new int[input.Length];
-        int[] columnB = new int[input.Length];
+        var columnA = new int[input.Length];
+        var columnB = new int[input.Length];
 
-        for (int row = 0; row < input.Length; row++)
+        for (var row = 0; row < input.Length; row++)
         {
-            var output = ExtractNumbers(input[row]);
-
-            columnA.SetValue(output.Item1, row);
-            columnB.SetValue(output.Item2, row);
+            var (numberA, numberB) = ExtractNumbers(input[row]);
+            columnA[row] = numberA;
+            columnB[row] = numberB;
         }
 
         Array.Sort(columnA);
-        Array.Sort(columnB);
-        
-        int totalDiff = 0;
+
+
+        Dictionary<int, int> counts = new Dictionary<int, int>();
+        foreach (int number in columnB)
+        {
+            if (counts.ContainsKey(number))
+                counts[number]++;
+            else
+                counts[number] = 1;
+        }
+
+        // Calculate the total sum based on occurrences
+        int totalSum = 0;
+        foreach (int number in columnA)
+        {
+            int count = counts.ContainsKey(number) ? counts[number] : 0;
+            totalSum += number * count;
+        }
+
+        var totalDiff = 0;
 
         for (var row = 0; row < input.Length; row++)
         {
@@ -45,6 +71,10 @@ public class DayOne
             totalDiff += diff;
         }
 
-        return totalDiff.ToString();
+        return new DayOneResult()
+        {
+            TotalDifference = totalDiff,
+            TotalSum = totalSum
+        };
     }
 }
