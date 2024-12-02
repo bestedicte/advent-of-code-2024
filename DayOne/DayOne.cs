@@ -43,21 +43,17 @@ public class DayOne
 
         Array.Sort(columnA);
 
-
-        Dictionary<int, int> counts = new Dictionary<int, int>();
-        foreach (int number in columnB)
-        {
+        var counts = new Dictionary<int, int>();
+        foreach (var number in columnB)
             if (counts.ContainsKey(number))
                 counts[number]++;
             else
                 counts[number] = 1;
-        }
 
-        // Calculate the total sum based on occurrences
-        int totalSum = 0;
-        foreach (int number in columnA)
+        var totalSum = 0;
+        foreach (var number in columnA)
         {
-            int count = counts.ContainsKey(number) ? counts[number] : 0;
+            var count = counts.ContainsKey(number) ? counts[number] : 0;
             totalSum += number * count;
         }
 
@@ -71,7 +67,7 @@ public class DayOne
             totalDiff += diff;
         }
 
-        return new DayOneResult()
+        return new DayOneResult
         {
             TotalDifference = totalDiff,
             TotalSum = totalSum

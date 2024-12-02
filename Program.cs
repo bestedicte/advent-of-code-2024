@@ -1,4 +1,5 @@
 ﻿using AOC.DayOne;
+using AOC.DayTwo;
 
 internal class Program
 {
@@ -8,5 +9,7 @@ internal class Program
         var dayOne = DayOne.Run();
         Console.WriteLine($"Day One, Part One: {dayOne.TotalDifference}");
         Console.WriteLine($"Day One, Part Two: {dayOne.TotalSum}");
+        var dayTwo = DayTwo.Run();
+        Console.WriteLine($"Day Two, Part One: {dayTwo.SafeRowCount}");
     }
 }
