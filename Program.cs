@@ -1,4 +1,5 @@
 ﻿using AOC.DayOne;
+using AOC.DayThree;
 using AOC.DayTwo;
 
 internal class Program
@@ -12,5 +13,7 @@ internal class Program
         var dayTwo = DayTwo.Run();
         Console.WriteLine($"Day Two, Part One: {dayTwo.SafeRowCount}");
         Console.WriteLine($"Day Two, Part Two: {dayTwo.TotalSafeRowCount}");
+        var dayThree = DayThree.Run();
+        Console.WriteLine($"Day Three, Part One: {dayThree.MultiplierTotal}");
     }
 }
