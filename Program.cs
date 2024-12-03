@@ -11,5 +11,6 @@ internal class Program
         Console.WriteLine($"Day One, Part Two: {dayOne.TotalSum}");
         var dayTwo = DayTwo.Run();
         Console.WriteLine($"Day Two, Part One: {dayTwo.SafeRowCount}");
+        Console.WriteLine($"Day Two, Part Two: {dayTwo.TotalSafeRowCount}");
     }
 }

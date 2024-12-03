@@ -3,10 +3,12 @@ namespace AOC.DayTwo;
 public class DayTwoResult
 {
     public int SafeRowCount { get; set; }
+    public int TotalSafeRowCount { get; set; }
 
     public override string ToString()
     {
-        return $"SafeRowCount: {SafeRowCount}";
+        return $"SafeRowCount: {SafeRowCount}, " +
+               $"TotalSafeRowCount: {TotalSafeRowCount}";
     }
 }
 
@@ -14,7 +16,7 @@ public class DayTwo
 {
     private static string[] ParseInput()
     {
-        return File.ReadAllLines("DayTwo/input.txt"); // Simplified the input reading
+        return File.ReadAllLines("DayTwo/input.txt");
     }
 
     private static int[] ParseLevels(string input)
@@ -36,10 +38,26 @@ public class DayTwo
             .Any(diff => diff < 1 || diff > 3);
     }
 
+    private static bool CanBeMadeSafe(int[] levels)
+    {
+        for (var i = 0; i < levels.Length; i++)
+        {
+            var modifiedLevels = levels.Where((_, index) => index != i).ToArray();
+
+            if ((AreLevelsInSequence(modifiedLevels, (current, next) => current < next) ||
+                 AreLevelsInSequence(modifiedLevels, (current, next) => current > next)) &&
+                HasValidLevelDifferences(modifiedLevels))
+                return true;
+        }
+
+        return false;
+    }
+
     public static DayTwoResult Run()
     {
         var inputLines = ParseInput();
         var safeRowCount = 0;
+        var additionalSafeRowCount = 0;
 
         foreach (var line in inputLines)
         {
@@ -47,13 +65,16 @@ public class DayTwo
             var increasing = AreLevelsInSequence(levels, (current, next) => current < next);
             var decreasing = AreLevelsInSequence(levels, (current, next) => current > next);
 
+
             if ((increasing || decreasing) && HasValidLevelDifferences(levels))
                 safeRowCount++;
+            else if (CanBeMadeSafe(levels)) additionalSafeRowCount++;
         }
 
         return new DayTwoResult
         {
-            SafeRowCount = safeRowCount
+            SafeRowCount = safeRowCount,
+            TotalSafeRowCount = safeRowCount + additionalSafeRowCount
         };
     }
 }
